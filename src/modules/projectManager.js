@@ -3,7 +3,7 @@ import ToDo from "./todo.js";
 
 const ProjectManager = (() => {
   const projects = [];
-  const curProject = null;
+  let curProject = null;
 
   // load from localstorage
   const loadProjects = () => {
@@ -13,7 +13,7 @@ const ProjectManager = (() => {
 
     return parse.map((proj) => {
       const newProj = Project(proj.name);
-      newProj.todos(...proj.todos);
+      newProj.todos.push(...proj.todos);
       return newProj;
     });
   };
@@ -26,7 +26,7 @@ const ProjectManager = (() => {
   // initialize
   const init = () => {
     const savedProjects = loadProjects();
-    if (projects.length) {
+    if (savedProjects.length) {
       projects.push(...savedProjects);
       curProject = projects[0];
     } else {
@@ -49,7 +49,7 @@ const ProjectManager = (() => {
   // adding a todo to the current project
   const addTodo = (title, desc, due_date, priority) => {
     const newTodo = ToDo(title, desc, due_date, priority);
-    curProject.push(newTodo);
+    curProject.todos.push(newTodo);
     saveProjects();
     return newTodo;
   };
@@ -65,7 +65,19 @@ const ProjectManager = (() => {
     curProject = projects[index];
   };
 
+  // clear all projects except the default project
+  const clearAllExceptDefault = () => {
+    if (projects.length > 0) {
+      projects.splice(1);
+      curProject = projects[0];
+      curProject.todos = [];
+      saveProjects();
+    }
+  };
+
   return {
+    projects,
+    curProject,
     loadProjects,
     saveProjects,
     init,
@@ -73,6 +85,7 @@ const ProjectManager = (() => {
     addTodo,
     deleteTodo,
     switchProject,
+    clearAllExceptDefault,
   };
 })();
 
