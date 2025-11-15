@@ -9,9 +9,9 @@
 body {
   display: flex;
   justify-content: center;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   line-height: 1.5;
-  background-color: #FFE3E9;
+  background-color: #ffe3e9;
 }
 
 img {
