@@ -45,6 +45,21 @@ export const renderTodos = () => {
     const li = document.createElement("li");
     li.textContent = `${todo.title} - ${todo.due_date} [${todo.priority}]`;
 
+    const title = document.createElement("strong");
+    title.textContent = todo.title;
+
+    const info = document.createElement("span");
+    info.textContent = ` - ${todo.due_date} [${todo.priority}]`;
+
+    if (todo.desc) {
+      const desc = document.createElement("p");
+      desc.textContent = todo.desc;
+      desc.style.margin = "5px 0";
+      desc.style.fontSize = "0.5em";
+      desc.style.color = "#666";
+      li.appendChild(desc);
+    }
+
     const delBtn = document.createElement("button");
     delBtn.textContent = "Delete";
     delBtn.addEventListener("click", () => {
