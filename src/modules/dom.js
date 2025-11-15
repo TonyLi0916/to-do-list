@@ -7,18 +7,31 @@ export const renderProjects = () => {
   projectsList.innerHTML = "";
   ProjectManager.projects.forEach((proj, index) => {
     const li = document.createElement("li");
-    li.textContent = proj.name;
+
+    const span = document.createElement("span");
+    span.textContent = proj.name;
+    span.style.cursor = "pointer";
 
     if (ProjectManager.curProject === proj) {
-      li.style.fontWeight = "bold";
+      span.style.fontWeight = "bold";
     }
 
-    li.addEventListener("click", () => {
+    span.addEventListener("click", () => {
       ProjectManager.switchProject(index);
       renderProjects();
       renderTodos();
     });
 
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "Delete";
+    delBtn.addEventListener("click", () => {
+      ProjectManager.deleteProject(index);
+      renderProjects();
+      renderTodos();
+    });
+
+    li.appendChild(span);
+    li.appendChild(delBtn);
     projectsList.appendChild(li);
   });
 };

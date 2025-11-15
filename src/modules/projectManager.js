@@ -5,7 +5,7 @@ const ProjectManager = (() => {
   const projects = [];
   let curProject = null;
 
-  // Load projects from localStorage
+  // load projects from localStorage
   const loadProjects = () => {
     const data = localStorage.getItem("projects");
     if (!data) return [];
@@ -18,12 +18,12 @@ const ProjectManager = (() => {
     });
   };
 
-  // Save projects to localStorage
+  // save projects to localStorage
   const saveProjects = () => {
     localStorage.setItem("projects", JSON.stringify(projects));
   };
 
-  // Initialize
+  // initialize
   const init = () => {
     const savedProjects = loadProjects();
     if (savedProjects.length) {
@@ -37,7 +37,7 @@ const ProjectManager = (() => {
     }
   };
 
-  // Create a new project
+  // create a new project
   const createProject = (name) => {
     const newProject = Project(name);
     projects.push(newProject);
@@ -46,7 +46,7 @@ const ProjectManager = (() => {
     return newProject;
   };
 
-  // Add todo to current project
+  // add todo to current project
   const addTodo = (title, desc, due_date, priority) => {
     if (!curProject) return null;
     const todo = ToDo(title, desc, due_date, priority);
@@ -55,16 +55,26 @@ const ProjectManager = (() => {
     return todo;
   };
 
-  // Delete a todo by index
+  // delete a todo by index
   const deleteTodo = (index) => {
     if (!curProject) return;
     curProject.todos.splice(index, 1);
     saveProjects();
   };
 
-  // Switch project by index
+  // switch project by index
   const switchProject = (index) => {
     curProject = projects[index];
+  };
+
+  // delete project by index
+  const deleteProject = (index) => {
+    if (projects.length === 1) return;
+    projects.splice(index, 1);
+    if (curProject === projects[index] || !projects.includes(curProject)) {
+      curProject = projects[0];
+    }
+    saveProjects();
   };
 
   return {
@@ -77,6 +87,7 @@ const ProjectManager = (() => {
     addTodo,
     deleteTodo,
     switchProject,
+    deleteProject,
   };
 })();
 
