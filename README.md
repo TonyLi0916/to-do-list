@@ -1,4 +1,5 @@
 # to-do-list
+Simple todo list with persistent data
 
 # links
 [Live Website](https://tonyli0916.github.io/to-do-list/)
