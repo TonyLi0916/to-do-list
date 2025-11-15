@@ -1,12 +1,36 @@
 import "./styles.css";
-import DOM from "./modules/dom.js";
-import Project from "./modules/project.js";
-import ToDo from "./modules/todo.js";
 import ProjectManager from "./modules/projectManager.js";
+import { renderProjects, renderTodos } from "./modules/dom.js";
 
+// initialize
 ProjectManager.init();
-ProjectManager.clearAllExceptDefault();
-ProjectManager.createProject("Random Project");
-ProjectManager.addTodo("Test task", "Just testing", "2026-09-16", "high");
+renderProjects();
+renderTodos();
 
-console.log("All projects:", JSON.stringify(ProjectManager.projects, null, 2));
+// add project
+document.getElementById("add-project-btn").addEventListener("click", () => {
+  const name = document.getElementById("new-project-name").value;
+  if (!name) return;
+  ProjectManager.createProject(name);
+  renderProjects();
+  renderTodos();
+  document.getElementById("new-project-name").value = "";
+});
+
+// add todo
+document.getElementById("add-todo-btn").addEventListener("click", () => {
+  const title = document.getElementById("todo-title").value;
+  const desc = document.getElementById("todo-desc").value;
+  const due = document.getElementById("todo-due").value;
+  const priority = document.getElementById("todo-priority").value;
+
+  if (!title || !due) return;
+
+  ProjectManager.addTodo(title, desc, due, priority);
+  renderTodos();
+
+  // clear inputs
+  document.getElementById("todo-title").value = "";
+  document.getElementById("todo-desc").value = "";
+  document.getElementById("todo-due").value = "";
+});

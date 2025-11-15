@@ -5,25 +5,25 @@ const ProjectManager = (() => {
   const projects = [];
   let curProject = null;
 
-  // load from localstorage
+  // Load projects from localStorage
   const loadProjects = () => {
     const data = localStorage.getItem("projects");
     if (!data) return [];
-    const parse = JSON.parse(data);
+    const parsed = JSON.parse(data);
 
-    return parse.map((proj) => {
+    return parsed.map((proj) => {
       const newProj = Project(proj.name);
       newProj.todos.push(...proj.todos);
       return newProj;
     });
   };
 
-  // save to localstorage
+  // Save projects to localStorage
   const saveProjects = () => {
     localStorage.setItem("projects", JSON.stringify(projects));
   };
 
-  // initialize
+  // Initialize
   const init = () => {
     const savedProjects = loadProjects();
     if (savedProjects.length) {
@@ -37,7 +37,7 @@ const ProjectManager = (() => {
     }
   };
 
-  // create a project
+  // Create a new project
   const createProject = (name) => {
     const newProject = Project(name);
     projects.push(newProject);
@@ -46,46 +46,37 @@ const ProjectManager = (() => {
     return newProject;
   };
 
-  // adding a todo to the current project
+  // Add todo to current project
   const addTodo = (title, desc, due_date, priority) => {
-    const newTodo = ToDo(title, desc, due_date, priority);
-    curProject.todos.push(newTodo);
+    if (!curProject) return null;
+    const todo = ToDo(title, desc, due_date, priority);
+    curProject.todos.push(todo);
     saveProjects();
-    return newTodo;
+    return todo;
   };
 
-  // deleting a todo by index
+  // Delete a todo by index
   const deleteTodo = (index) => {
+    if (!curProject) return;
     curProject.todos.splice(index, 1);
     saveProjects();
   };
 
-  // switching a project
+  // Switch project by index
   const switchProject = (index) => {
     curProject = projects[index];
   };
 
-  // clear all projects except the default project
-  const clearAllExceptDefault = () => {
-    if (projects.length > 0) {
-      projects.splice(1);
-      curProject = projects[0];
-      curProject.todos = [];
-      saveProjects();
-    }
-  };
-
   return {
     projects,
-    curProject,
-    loadProjects,
-    saveProjects,
+    get curProject() {
+      return curProject;
+    },
     init,
     createProject,
     addTodo,
     deleteTodo,
     switchProject,
-    clearAllExceptDefault,
   };
 })();
 
