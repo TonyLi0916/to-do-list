@@ -48,9 +48,6 @@ export const renderTodos = () => {
     const title = document.createElement("strong");
     title.textContent = todo.title;
 
-    const info = document.createElement("span");
-    info.textContent = ` - ${todo.due_date} [${todo.priority}]`;
-
     if (todo.desc) {
       const desc = document.createElement("p");
       desc.textContent = todo.desc;
